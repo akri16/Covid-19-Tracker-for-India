@@ -1,0 +1,25 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorSurface">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="StatisticsTextStyle" parent="TextAppearance.AppCompat.Display1">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:typeface">serif</item>
+    </style>
+
+    <style name="ToolbarTextApperance" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="android:textStyle">normal</item>
+        <item name="fontFamily">@font/alfa_slab_one</item>
+
+    </style>
+
+</resources>

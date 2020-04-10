@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/news_item_card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:background="#FFFFFF"
+    android:backgroundTint="#FFFFFF"
+    android:backgroundTintMode="src_in"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardCornerRadius="32dp"
+    app:cardElevation="8dp"
+    app:cardForegroundColor="@android:color/transparent"
+    app:cardMaxElevation="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp">
+
+        <ImageView
+            android:id="@+id/news_item_img"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="w,3:4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/corona_news_default_img" />
+
+        <TextView
+            android:id="@+id/news_item_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/roboto_bold"
+            android:textColor="@android:color/black"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/news_item_img"
+            tools:text="Space Photos of the Week: Perfectly Safe Celestial Coronas" />
+
+        <TextView
+            android:id="@+id/news_item_body"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/news_item_title"
+            app:layout_constraintStart_toStartOf="@+id/news_item_title"
+            app:layout_constraintTop_toBottomOf="@+id/news_item_title"
+            tools:text="For Béa Johnson, the author of Zero Waste Home, one of the founding texts of the zero waste movement, the hygienic uncertainty in the supply chain is one reason she prefers a reusable water canteen to disposable water bottles." />
+
+        <TextView
+            android:id="@+id/news_item_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/news_date_round_bg"
+            android:fontFamily="@font/lato_bold"
+            android:padding="5dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/news_item_img"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="10-09-2020" />
+
+        <TextView
+            android:id="@+id/news_item_source"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/alfa_slab_one"
+            android:text="Times Of India"
+            android:textAlignment="textEnd"
+            android:textAllCaps="true"
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/news_item_body"
+            app:layout_constraintStart_toStartOf="@+id/news_item_body"
+            app:layout_constraintTop_toBottomOf="@+id/news_item_body" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

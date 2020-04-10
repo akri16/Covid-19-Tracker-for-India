@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorSecondary">#26C6DA</color>
+    <color name="colorAccent">#E9B5B3B3</color>
+    <color name="colorSurface">#1D255A</color>
+    <color name="colorSurfaceDark">#4D0F1439</color>
+    <color name="white">#E8FFFFFF</color>
+    <color name="graph_bg">#19D6D3D3</color>
+    <color name="color_graph_active">#F57C00</color>
+    <color name="color_graph_recovered">#00796B</color>
+    <color name="color_graph_dead">#D32F2F</color>
+</resources>

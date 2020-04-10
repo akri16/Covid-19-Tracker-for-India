@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/stats_circles"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    tools:context=".view.StatisticsFragment">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/stats_tv_dead"
+        style="@style/StatisticsTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/circular_tv_bg"
+        android:backgroundTint="#D32F2F"
+        android:fontFamily="@font/roboto_bold"
+        android:gravity="center"
+        android:text="@string/nil"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/stats_tv_recovered"
+        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/stats_tv_recovered" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/stats_tv_recovered"
+        style="@style/StatisticsTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/circular_tv_bg"
+        android:backgroundTint="#00796B"
+        android:fontFamily="@font/roboto_bold"
+        android:gravity="center"
+        android:text="@string/nil"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stats_tv_active" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/stats_tv_active"
+        style="@style/StatisticsTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/circular_tv_bg"
+        android:backgroundTint="#F57C00"
+        android:fontFamily="@font/roboto_bold"
+        android:gravity="center"
+        android:text="@string/nil"
+        android:textStyle="bold"
+        app:fontFamily="@font/roboto_bold"
+        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintEnd_toEndOf="@+id/stats_tv_dead"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="@+id/stats_tv_recovered"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/stats_tv_active_disp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Currently Active"
+        app:layout_constraintBottom_toTopOf="@+id/stats_tv_active"
+        app:layout_constraintEnd_toEndOf="@+id/stats_tv_active"
+        app:layout_constraintStart_toStartOf="@+id/stats_tv_active" />
+
+    <TextView
+        android:id="@+id/stats_tv_recovered_disp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Recovered"
+        app:layout_constraintBottom_toTopOf="@+id/stats_tv_recovered"
+        app:layout_constraintEnd_toEndOf="@+id/stats_tv_recovered"
+        app:layout_constraintStart_toStartOf="@+id/stats_tv_recovered" />
+
+    <TextView
+        android:id="@+id/stats_tv_dead_disp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Dead"
+        app:layout_constraintBottom_toTopOf="@+id/stats_tv_dead"
+        app:layout_constraintEnd_toEndOf="@+id/stats_tv_dead"
+        app:layout_constraintStart_toStartOf="@+id/stats_tv_dead" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
