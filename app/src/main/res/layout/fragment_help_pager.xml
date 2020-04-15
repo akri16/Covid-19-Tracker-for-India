@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardCornerRadius="16dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        tools:context=".view.HelpPagerFragment">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/pager_item_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:cropToPadding="false"
+            android:maxWidth="200dp"
+            android:maxHeight="200dp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_title_pager_item"
+            app:layout_constraintStart_toStartOf="@+id/tv_title_pager_item"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_imageAssetsFolder="images"
+            app:lottie_loop="true"
+            app:srcCompat="@drawable/ic_alert" />
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="16dp"
+            android:clipToPadding="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tv_title_pager_item"
+            app:layout_constraintStart_toStartOf="@+id/tv_title_pager_item"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title_pager_item">
+
+            <TextView
+                android:id="@+id/tv_body_pager_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:autoLink="web"
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp"
+                tools:text="@string/body_1" />
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/tv_title_pager_item"
+            style="@style/TextAppearance.MaterialComponents.Headline5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:fontFamily="@font/roboto_bold"
+            android:shadowColor="#0E0E0E"
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textColor="@color/colorSurface"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pager_item_image"
+            tools:text="Are you experiencing any of the following symptoms?" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
