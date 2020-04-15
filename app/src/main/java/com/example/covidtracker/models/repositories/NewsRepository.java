@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.covidtracker.interfaces.FetchDataCallback;
 import com.example.covidtracker.models.dataModels.NewsResponse;
 import com.example.covidtracker.interfaces.NewsApi;
 
@@ -15,7 +16,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NewsRepository {
     private static final String TAG = "NewsRepository";
-
     private final String BASE_URL = "https://newsapi.org/";
     private static NewsRepository instance;
     private NewsApi newsApi;
@@ -35,7 +35,7 @@ public class NewsRepository {
         return instance;
     }
 
-    public MutableLiveData<NewsResponse> getLiveNewsResponse() {
+    public MutableLiveData<NewsResponse> getLiveNewsResponse(FetchDataCallback callback) {
         MutableLiveData<NewsResponse> liveNewsResponse = new MutableLiveData<>();
         Call<NewsResponse> response = newsApi.getNews(NewsApi.QUERY_KEYWORD, NewsApi.NEWS_API_KEY,
                 NewsApi.NO_OF_ARTICLES, NewsApi.SORT_BY, NewsApi.LANGUAGE);
@@ -43,14 +43,34 @@ public class NewsRepository {
             @Override
             public void onResponse(Call<NewsResponse> call, Response<NewsResponse> response) {
                 liveNewsResponse.postValue(response.body());
+                callback.onSuccess();
             }
 
             @Override
             public void onFailure(Call<NewsResponse> call, Throwable t) {
                 Log.e(TAG, "onFailure: ", t);
+                callback.onFailure();
             }
         });
         return liveNewsResponse;
+    }
+
+    public void refreshNewsResponse(MutableLiveData<NewsResponse> liveNewsResponse, FetchDataCallback callback) {
+        Call<NewsResponse> response = newsApi.getNews(NewsApi.QUERY_KEYWORD, NewsApi.NEWS_API_KEY,
+                NewsApi.NO_OF_ARTICLES, NewsApi.SORT_BY, NewsApi.LANGUAGE);
+        response.enqueue(new Callback<NewsResponse>() {
+            @Override
+            public void onResponse(Call<NewsResponse> call, Response<NewsResponse> response) {
+                liveNewsResponse.postValue(response.body());
+                callback.onSuccess();
+            }
+
+            @Override
+            public void onFailure(Call<NewsResponse> call, Throwable t) {
+                Log.e(TAG, "onFailure: ", t);
+                callback.onFailure();
+            }
+        });
     }
 
 }

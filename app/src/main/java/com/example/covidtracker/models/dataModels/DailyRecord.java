@@ -12,6 +12,13 @@ public class DailyRecord {
     public DailyRecord() {
     }
 
+    public DailyRecord(int confirmed, int recovered, int active, int deaths) {
+        this.confirmed = confirmed;
+        this.recovered = recovered;
+        this.active = active;
+        this.deaths = deaths;
+    }
+
     public String getDate() {
         return date;
     }

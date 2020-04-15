@@ -2,8 +2,43 @@
     <string name="app_name">Covid Tracker</string>
     <string name="statistics">Statistics</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="nil">NIL</string>
     <string name="call_perm_on_rejected_message">Please accept the permission to make call</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string name="dialog_1">Please call National helpline(1075) below immediately if you are experiencing any of the following </string>
+    <string name="dialog_2">If you belong to any of these you are in <b>at-risk</b> group. Maintain good health and practice self isolation
+    </string>
+    <string name="dialog_3">Follow all government guidelines and instructions</string>
+    <string name="dialog_4">Please call local Corona help centre to take necessary steps to ensure your well-being if</string>
+    <string name="body_1">\u2022 severe difficulty breathing\n\u2022 severe chest pain\n\u2022 confusion (for example, unsure of where you are)\n\u2022 lost consciousness
+    </string>
+
+    <string name="body_2">
+        \u2022 I am over 70 years of age\n\u2022 I have a condition that affects my immune system (for example, HIV/AIDS)\n\u2022 I have a chronic health condition (for example, diabetes, heart condition)\n\u2022 I am getting treatment that affects my immune system (for example, chemotherapy)\n
+    </string>
+
+    <string name="body_3">
+        <a href="https://www.mygov.in/covid-19/?cbps=1" />Visit <b>MyGov.in</b> for up to date information about COVID-19\nPractice Self distancing for well-being of self and society
+    </string>
+
+    <string name="body_4">\u2022 If you have travelled outside of India in the last 14 days\n\u2022 or came in contact with such a person\n\u2022 have someone you are in close contact with tested positive for COVID-19</string>
+
+    <string name="wash_hands">Wash your hands regularly for 20 seconds, with soap and water or alcohol-based hand rub</string>
+    <string name="cover">Cover your nose and mouth with a disposable tissue or flexed elbow when you cough or sneeze</string>
+    <string name="avoid_contact">Avoid close contact (2 meter or 6 feet) with people who are unwell</string>
+    <string name="avoid_body_touch">Don`t Touch your eyes, nose, or mouth if your hands are not clean</string>
+    <string name="help">help</string>
+    <string name="news">news</string>
+    <string name="maps">maps</string>
+
+    <string name="active"><b>Active: </b></string>
+    <string name="dead"><b>Dead: </b></string>
+    <string name="recovered"><b>Recovered: </b></string>
+    <string name="total"><b>Total Cases: </b></string>
+    <string name="confirmed">Confirmed</string>
+    <string name="call_national_covid_helpline">Call National Covid Helpline</string>
+    <string name="covid_tracker">Covid Tracker</string>
+
 </resources>

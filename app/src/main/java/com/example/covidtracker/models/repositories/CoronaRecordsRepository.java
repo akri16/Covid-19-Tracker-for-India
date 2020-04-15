@@ -5,8 +5,11 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.covidtracker.interfaces.Covid19Api;
+import com.example.covidtracker.interfaces.FetchDataCallback;
 import com.example.covidtracker.models.dataModels.DailyRecord;
-import com.example.covidtracker.utils.GeneralUtils;
+import com.example.covidtracker.models.dataModels.ProcessedHistory;
+import com.example.covidtracker.utils.CoronaRecordsUtils;
+import com.example.covidtracker.utils.DataUtils;
 import com.example.covidtracker.models.dataModels.CoronaHistory;
 import com.google.gson.Gson;
 
@@ -15,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,10 +39,16 @@ public class CoronaRecordsRepository {
 
     private MutableLiveData<List<CoronaHistory>> liveRecords;
     private MutableLiveData<List<List<DailyRecord>>> livestatewiseRecords;
+    private MutableLiveData<ProcessedHistory> liveProcessedRecords;
+
+    public MutableLiveData<ProcessedHistory> getLiveProcessedRecords() {
+        return liveProcessedRecords;
+    }
 
     private CoronaRecordsRepository() {
         liveRecords = new MutableLiveData<>();
         livestatewiseRecords = new MutableLiveData<>();
+        liveProcessedRecords = new MutableLiveData<>();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .build();
@@ -61,7 +71,7 @@ public class CoronaRecordsRepository {
         return liveRecords;
     }
 
-    public void getHistoryRecords() {
+    public void getHistoryRecords(FetchDataCallback callback) {
         List<CoronaHistory> historyRecords = new ArrayList<>();
         Call<ResponseBody> call = covid19Api.getHistoryData();
         call.enqueue(new Callback<ResponseBody>() {
@@ -83,7 +93,10 @@ public class CoronaRecordsRepository {
                             historyRecords.add(historyObject);
                         }
                         liveRecords.setValue(historyRecords);
-                        livestatewiseRecords.setValue(makeStatewiseRecord(historyRecords));
+                        List<List<DailyRecord>> statewise = CoronaRecordsUtils.makeStatewiseRecord(historyRecords);
+                        livestatewiseRecords.setValue(statewise);
+                        liveProcessedRecords.setValue(CoronaRecordsUtils.processRecord(statewise));
+                        callback.onSuccess();
 
                     } catch (IOException | JSONException e) {
                         e.printStackTrace();
@@ -93,32 +106,13 @@ public class CoronaRecordsRepository {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                callback.onFailure();
                 Log.d(TAG, "onFailure: ", t);
             }
         });
 
     }
 
-    private List<List<DailyRecord>> makeStatewiseRecord(List<CoronaHistory> record) {
-        List<List<DailyRecord>> stateWise = new ArrayList<>();
-        for (int i = 0; i< GeneralUtils.stateList.size(); i++) {
-            String state = GeneralUtils.stateList.get(i);
-            stateWise.add(new ArrayList<>());
-            for (CoronaHistory it1 : record) {
-                if(i==0){
-                    it1.getTotal().setDate(it1.getDate());
-                    stateWise.get(i).add(it1.getTotal());
-                    continue;
-                }
-                for (DailyRecord it2 : it1.getStatewise()) {
-                    if (state.equals(it2.getState())) {
-                        it2.setDate(it1.getDate());
-                        stateWise.get(i).add(it2);
-                    }
-                }
-            }
-        }
-        return stateWise;
-    }
+
 
 }

@@ -6,13 +6,17 @@
         android:icon="@drawable/ic_statistics"/>
 
     <item
+        android:id="@+id/navigation_map"
+        android:icon="@drawable/ic_map"
+        android:title="@string/maps" />
+    <item
         android:id="@+id/navigation_help"
-        android:title="help"
+        android:title="@string/help"
         android:icon="@drawable/ic_help"/>
 
     <item
         android:id="@+id/navigation_news"
-        android:title="news"
+        android:title="@string/news"
         android:icon="@drawable/ic_news"/>
 
 </menu>

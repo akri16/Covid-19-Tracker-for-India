@@ -14,6 +14,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,12 +22,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.covidtracker.R;
 import com.example.covidtracker.databinding.FragmentStatisticsBinding;
+import com.example.covidtracker.interfaces.FetchDataCallback;
 import com.example.covidtracker.models.dataModels.CoronaHistory;
 import com.example.covidtracker.models.dataModels.DailyRecord;
+import com.example.covidtracker.utils.DataUtils;
 import com.example.covidtracker.utils.GeneralUtils;
 import com.example.covidtracker.utils.LineChartHelper;
 import com.example.covidtracker.viewmodels.CoronaRecordsViewModel;
+import com.example.covidtracker.viewmodels.CustomViewModelFactory;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
@@ -60,9 +65,6 @@ public class StatisticsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentStatisticsBinding.inflate(inflater, container, false);
-        recordsViewModel = new ViewModelProvider(getActivity()).get(CoronaRecordsViewModel.class);
-        liveRecords = recordsViewModel.getLiveRecords();
-        liveStatewiseRecords = recordsViewModel.getLiveStatewiseRecords();
 
         return binding.getRoot();
     }
@@ -71,11 +73,30 @@ public class StatisticsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        binding.statsLocation.setText(GeneralUtils.stateList.get(currentDateValue));
+        binding.statsLocation.setText(DataUtils.STATE_LIST.get(currentDateValue));
+        CustomViewModelFactory factory = new CustomViewModelFactory(getActivity().getApplication(),
+                new FetchDataCallback() {
+                    @Override
+                    public void onFailure() {
+                        binding.recordsSwipeRefresh.setRefreshing(false);
+                        GeneralUtils.showNoInternetSnackbar(getActivity().findViewById(R.id.bottom_nav));
+                    }
+                    @Override
+                    public void onSuccess() {
+                        binding.recordsSwipeRefresh.setRefreshing(false);
+                    }
+                }, CustomViewModelFactory.COVID_MODEL);
 
+        recordsViewModel = new ViewModelProvider(this, factory).get(CoronaRecordsViewModel.class);
+        liveRecords = recordsViewModel.getLiveRecords();
+        liveStatewiseRecords = recordsViewModel.getLiveStatewiseRecords();
+
+        binding.recordsSwipeRefresh.setOnRefreshListener(() -> {
+            recordsViewModel.refreshRecords();
+        });
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Choose a location");
-        ArrayList<String> data = new ArrayList<>(GeneralUtils.stateList);
+        ArrayList<String> data = new ArrayList<>(DataUtils.STATE_LIST);
         data.add(0, "My Location");
         builder.setItems(data.toArray(new String[30]), (dialog, which) -> {
             int index = which-1;
@@ -86,7 +107,7 @@ public class StatisticsFragment extends Fragment {
                     index = 0;
                 }
             }
-            binding.statsLocation.setText(GeneralUtils.stateList.get(index));
+            binding.statsLocation.setText(DataUtils.STATE_LIST.get(index));
             currentlocationValue = index;
             initGraph();
         });
@@ -97,6 +118,7 @@ public class StatisticsFragment extends Fragment {
 
         liveStatewiseRecords.observe(getViewLifecycleOwner(), lists -> {
             if(liveStatewiseRecords.getValue()!=null) {
+                binding.recordsSwipeRefresh.setRefreshing(false);
                 binding.statsLineChart.setOnChartValueSelectedListener(new MyChartValueSelectedListener());
                 initGraph();
                 Log.d(TAG, "onActivityCreated: ");
@@ -129,19 +151,30 @@ public class StatisticsFragment extends Fragment {
 
     private void initStats()  {
         if(liveStatewiseRecords.getValue()==null){
-            Toast.makeText(getContext(), "Please connect to internet", Toast.LENGTH_SHORT).show();
+           GeneralUtils.showNoInternetSnackbar(getActivity().findViewById(R.id.bottom_nav));
             return;
         }
         DailyRecord record = liveStatewiseRecords.getValue().get(currentlocationValue).get(currentDateValue);
+        DailyRecord diffRecord = new DailyRecord(0, 0, 0, 0);
+        if(currentDateValue > 0){
+            DailyRecord prevRecord = liveStatewiseRecords.getValue().get(currentlocationValue).get(currentDateValue-1);
+            diffRecord.setActive(record.getActive()-prevRecord.getActive());
+            diffRecord.setConfirmed(record.getConfirmed()-prevRecord.getConfirmed());
+            diffRecord.setDeaths(record.getDeaths()-prevRecord.getDeaths());
+            diffRecord.setRecovered(record.getRecovered()-prevRecord.getRecovered());
+        }
         binding.statsCircles.statsTvActive.setText(String.valueOf(record.getActive()));
         binding.statsCircles.statsTvRecovered.setText(String.valueOf(record.getRecovered()));
         binding.statsCircles.statsTvDead.setText(String.valueOf(record.getDeaths()));
         binding.statsDate.setText(GeneralUtils.formatDate(record.getDate()));
+        binding.statsCircles.activeUpdateText.setText(GeneralUtils.getFormattedDiff(diffRecord.getActive()));
+        binding.statsCircles.deadUpdateText.setText(GeneralUtils.getFormattedDiff(diffRecord.getDeaths()));
+        binding.statsCircles.recoveredUpdateText.setText(GeneralUtils.getFormattedDiff(diffRecord.getRecovered()));
     }
 
     private void initGraph(){
         if(liveStatewiseRecords.getValue()==null){
-            Toast.makeText(getContext(), "Please connect to internet", Toast.LENGTH_SHORT).show();
+            GeneralUtils.showNoInternetSnackbar(getActivity().findViewById(R.id.bottom_nav));
             return;
         }
         List<DailyRecord> records = liveStatewiseRecords.getValue().get(currentlocationValue);
@@ -166,7 +199,7 @@ public class StatisticsFragment extends Fragment {
             String state = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1)
                     .get(0).getAdminArea();
             Log.d(TAG, "getLocationIndex: "+state);
-            index = GeneralUtils.getStateIndex(state);
+            index = DataUtils.getStateIndex(state);
         } catch (IOException e) {
             e.printStackTrace();
             Log.e(TAG, "getLocationIndex: ", e);

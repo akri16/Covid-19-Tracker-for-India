@@ -3,7 +3,7 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorSecondary">#26C6DA</color>
-    <color name="colorAccent">#E9B5B3B3</color>
+    <color name="colorAccent">#878787</color>
     <color name="colorSurface">#1D255A</color>
     <color name="colorSurfaceDark">#4D0F1439</color>
     <color name="white">#E8FFFFFF</color>
@@ -11,4 +11,8 @@
     <color name="color_graph_active">#F57C00</color>
     <color name="color_graph_recovered">#00796B</color>
     <color name="color_graph_dead">#D32F2F</color>
+    <color name="dead_color">#D32F2F</color>
+    <color name="recovered_color">#00796B</color>
+    <color name="active_color">#F57C00</color>
+    <color name="screen_freeze_color">#41000000</color>
 </resources>

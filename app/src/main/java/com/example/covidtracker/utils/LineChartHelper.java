@@ -85,6 +85,7 @@ public class LineChartHelper {
         xAxis.setValueFormatter(new MyFormattedValue());
         xAxis.setLabelCount(4);
         xAxis.setLabelRotationAngle(-45);
+        xAxis.setLabelCount(12, true);
 
         YAxis yAxisLeft = lineChart.getAxisLeft();
         yAxisLeft.setTextColor(textGreyColor);
@@ -95,9 +96,7 @@ public class LineChartHelper {
     }
 
     public void setDataset(List<DailyRecord> records){
-
         List<List<Entry>> dataVals = getDataset(records);
-        lineChart.getXAxis().setLabelCount(Math.round(3*records.size()/5f));
 
         LineDataSet dataSet1 = new LineDataSet(dataVals.get(0), "Active");
         dataSet1.setColor(colorArray[0]);

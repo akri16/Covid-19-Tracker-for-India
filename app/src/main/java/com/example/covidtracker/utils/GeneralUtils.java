@@ -2,19 +2,27 @@ package com.example.covidtracker.utils;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.TransitionOptions;
 import com.example.covidtracker.R;
+import com.example.covidtracker.models.dataModels.Guideline;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.material.snackbar.Snackbar;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -22,24 +30,6 @@ import java.util.List;
 
 public class GeneralUtils {
     private static final String TAG = "GeneralUtils";
-
-    public static final List<String> stateList = Arrays.asList("India", "Kerala", "Haryana", "Maharashtra", "Uttar Pradesh", "Delhi",
-            "Karnataka", "Jammu and Kashmir", "Rajasthan", "Andhra Pradesh", "Punjab", "Tamil Nadu", "Telangana",
-            "Assam", "Bihar", "Gujarat", "Meghalaya", "Madhya Pradesh", "Odisha", "Puducherry", "Tripura", "West Bengal",
-            "Goa", "Arunachal Pradesh", "Chhattisgarh", "Himachal Pradesh", "Jharkhand", "Manipur", "Mizoram", "Nagaland",
-            "Sikkim", "Uttarakhand", "Chandigarh", "Dadra and Nagar Haveli", "Daman and Diu", "Lakshadweep");
-
-    public static String HELPLINE_NO = "1075";
-
-    public static int getStateIndex(String state){
-        for(int i=0;i<stateList.size();i++){
-            if(stateList.get(i).toLowerCase().equals(state.toLowerCase())){
-                Log.d(TAG, "getStateIndex: " + i);
-                return i;
-            }
-        }
-        return -1;
-    }
 
     public static String formatDate(String inpdate){
         SimpleDateFormat givenformat = new SimpleDateFormat("yyyy-MM-dd");
@@ -69,8 +59,8 @@ public class GeneralUtils {
         return date;
     }
 
-    public static boolean checkPermission(Context context, String[] LOCATION_PERMISSION){
-        for(String perm : LOCATION_PERMISSION){
+    public static boolean checkPermission(Context context, final String[] PERMISSIONS){
+        for(String perm : PERMISSIONS){
             if(ActivityCompat.checkSelfPermission(context, perm) == PackageManager.PERMISSION_GRANTED){
                 return true;
             }
@@ -98,6 +88,79 @@ public class GeneralUtils {
             return text.substring(0, index);
 
         return text;
+    }
+
+    public static int getProgressColour(float percent, int c1, int c2) {
+        float[] rgb1 = getRGB(c1);
+        float[] rgb2 = getRGB(c2);
+        int[] rgb = new int[3];
+        float prg = percent / 100;
+
+
+        for (int i = 0; i < 3; i++) {
+            rgb[i] = (int) (rgb1[i] + prg * (rgb2[i] - rgb1[i]));
+        }
+
+        String hexColour = String.format("#%02X%02X%02X", rgb[0], rgb[1], rgb[2]);
+        Log.d(TAG, "getProgressColour: "+prg+" "+hexColour+"  " +rgb[0]+" "+rgb[1]+" "+rgb[2]);
+        return Color.parseColor(hexColour);
+    }
+
+    private static float[] getRGB(int color) {
+        float red = (color >> 16) & 0xFF;
+        float green = (color >> 8) & 0xFF;
+        float blue = (color) & 0xFF;
+
+        return new float[]{red, green, blue};
+    }
+
+    private LatLng getPlaceLatLng(Context context, String name) {
+        Geocoder geocoder = new Geocoder(context);
+        try {
+            List<Address> addresses = geocoder.getFromLocationName(name, 1);
+            if (!addresses.isEmpty()) {
+                return new LatLng(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String getString (Context context, int c, int value){
+        String s = String.valueOf(value);
+        if(context==null){
+            return "";
+        }
+
+        switch (c){
+            case 0:
+                return context.getString(R.string.active)+s;
+            case 1:
+                return context.getString(R.string.dead)+s;
+            case 2:
+                return context.getString(R.string.recovered)+s;
+            case 3:
+                return context.getString(R.string.total)+s;
+        }
+        return s;
+    }
+
+    public static String getFormattedDiff(int val){
+        if(val>=0){
+            return String.format("+%d", val);
+        }
+        else{
+            return String.valueOf(val);
+        }
+    }
+
+    public static void showNoInternetSnackbar(View root){
+        Snackbar snackbar = Snackbar
+                .make(root, "No Internet Connection", Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(ContextCompat.getColor(root.getContext(), R.color.white))
+                .setAnchorView(root);
+        snackbar.show();
     }
 
 }
